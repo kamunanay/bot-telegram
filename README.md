@@ -24,17 +24,5 @@
 ### Langkah-langkah
 ```bash
 # Clone repository
-git clone https://github.com/username/web-scan-bot.git
+git clone https://github.com/kamunanay/bot-telegram.git
 cd web-scan-bot
-
-# Buat virtual environment
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate    # Windows
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Konfigurasi bot
-cp .env.example .env
-nano .env  # Edit dengan token bot Anda
