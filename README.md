@@ -19,7 +19,7 @@
 
 ### Prasyarat
 - Python 3.8+
-- Akun Telegram dan bot token dari [@BotFather](https://t.me/BotFather)
+- Akun Telegram dan bot token dari [@XiaowuX_bot](https://t.me/XiaowuXbot)
 
 ### Langkah-langkah
 ```bash
