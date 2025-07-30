@@ -2,7 +2,7 @@ import os
 
 class Config:
     # Dapatkan token bot dari environment variable
-    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "")
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "7890620930:AAHHmKIxCFKxKWm0KqsA_gYWNYTJokymul8")
     
     # Konfigurasi scanner
     REQUEST_TIMEOUT = 10  # seconds
