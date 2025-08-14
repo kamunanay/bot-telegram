@@ -755,4 +755,3 @@ class AdvancedScanner:
         ]
 
     async def full_scan(self, url):
-         """Jal
