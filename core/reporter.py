@@ -44,7 +44,7 @@ class ReportGenerator:
         
         # Summary
         report += "📊 *Ringkasan:*\n"
-        report += f"- Subdomain: {len(scan_results['subdomains']}\n"
+        report += f"- Subdomain: {len(scan_results['subdomains'])}\n"
         report += f"- Admin Panels: {len(scan_results['admin_panels'])}\n"
         report += f"- File Sensitif: {len(scan_results['sensitive_files'])}\n"
         report += f"- Kerentanan XSS: {len(scan_results['xss_vulnerabilities'])}\n"
