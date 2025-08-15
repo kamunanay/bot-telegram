@@ -814,12 +814,18 @@ class AdvancedScanner:
         return [result for result in results if result]
 
     async def resolve_subdomain(self, domain):
-           if self.dns_resolver is None:
-            try:
-                socket.gethostbyname(domain)
-                return domain
-            except socket.gaierror:
-                return None
+    if self.dns_resolver is None:
+        try:
+            socket.gethostbyname(domain)
+            return domain
+        except socket.gaierror:
+            return None
+    
+    try:
+        await self.dns_resolver.query(domain, 'A')
+        return domain
+    except aiodns.error.DNSError:
+        return None
 
     async def scan_xss_vulnerabilities(self, urls):
         vulnerabilities = []
