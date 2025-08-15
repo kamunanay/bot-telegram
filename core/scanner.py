@@ -923,27 +923,52 @@ class AdvancedScanner:
         ))
         
         try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    target_url, 
-                    headers={"User-Agent": self.session.headers["User-Agent"]},
-                    timeout=5,
-                    ssl=False
-                ) as response:
-                    response_text = await response.text()
-                    
-                    sql_errors = [
-                        "SQL syntax", "MySQL server", "ORA-", "syntax error",
-                        "unclosed quotation mark", "PostgreSQL", "Microsoft Access",
-                        "ODBC", "JDBC", "SQLite", "MariaDB", "SQL error", "mysql_fetch",
-                        "pg_query", "sqlsrv_query", "oci_parse", "SQLite3::query"
-                    ]
-                    
-                    is_vulnerable = any(error in response_text for error in sql_errors)
-                    return (url, payload, is_vulnerable)
-        except:
-            return (url, payload, False)
-
+            async def test_ssrf(self, url):
+    parsed_url = urlparse(url)
+    query_params = parse_qs(parsed_url.query)
+    
+    if not query_params:
+        return (url, "", False)
+    payload = random.choice(self.ssrf_payloads)
+    
+    # Buat URL baru dengan payload
+    new_query = {}
+    for param, values in query_params.items():
+        new_query[param] = payload
+    
+    new_query_str = urlencode(new_query, doseq=True)
+    target_url = urlunparse((
+        parsed_url.scheme,
+        parsed_url.netloc,
+        parsed_url.path,
+        parsed_url.params,
+        new_query_str,
+        parsed_url.fragment
+    ))
+    
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                target_url, 
+                headers={"User-Agent": self.session.headers["User-Agent"]},
+                timeout=5,
+                ssl=False
+            ) as response:
+                response_text = await response.text()
+                
+                # Deteksi respons dari internal service
+                ssrf_indicators = [
+                    "EC2 Metadata", "Metadata Service", "Google Metadata",
+                    "Azure Instance Metadata", "Internal Server Error",
+                    "localhost", "127.0.0.1", "0.0.0.0", "internal",
+                    "private", "Forbidden", "Unauthorized", "Access Denied"
+                ]
+                
+                is_vulnerable = any(indicator in response_text for indicator in ssrf_indicators)
+                return (url, payload, is_vulnerable)
+    except:
+        return (url, payload, False)
+        
     async def scan_lfi_vulnerabilities(self, urls):
         vulnerabilities = []
         tasks = []
